@@ -4,7 +4,9 @@ import chai from 'chai';
 
 Given(/^Google page is opened$/, async () => {
   await browser.url('https://www.google.com');
-  // await browser.pause(7000);
+  await browser.pause(2000);
+  console.log('After opening Browser');
+  console.log(`>> browser Obj: ${JSON.stringify(browser)}`);
 });
 
 When(/^Search with (.*)$/, async (searchItem) => {
@@ -21,6 +23,19 @@ Then(/^Click on the first search result$/, async () => {
 
 Then(/^URL should match (.*)$/, async (ExpectedURL) => {
   console.log(`ExpectedURL: ${ExpectedURL}`);
+  await browser.waitUntil(
+    async () => {
+      return (
+        (await browser.getTitle()) ===
+        'WebdriverIO · Marco de prueba de automatización móvil y navegador de próxima generación para Node.js | WebdriverIO'
+      );
+    },
+    {
+      timeout: 2000,
+      interval: 500,
+      timeoutMsg: `Failed loading WDIO page: ${await browser.getTitle()} `,
+    }
+  );
   let url = await browser.getUrl();
   chai.expect(await url).to.be.equal(ExpectedURL);
 });
@@ -231,4 +246,84 @@ When(/^Perfom web interactions with keypress actions$/, async () => {
   await browser.keys('Delete');
 
   await browser.pause(2000);
+});
+
+When(/^Perfom web interactions with web Tables$/, async () => {
+  /** 1.  Check number of rows and columns */
+  let rowCount = await $$('//table[@id="table1"]/tbody/tr').length;
+  chai.expect(rowCount).to.be.equal(4);
+  let columCount = (await $$('//table[@id="table1"]/thead/tr/th')).length;
+  chai.expect(columCount).to.be.equal(6);
+
+  /** 2. Get whole table data*/
+  // //table[@id="table1"]/tbody/tr[1]/td[2]
+  let arrPersons = [];
+  for (let i = 0; i < rowCount; i++) {
+    let personObj = {
+      lastName: '',
+      firstName: '',
+      email: '',
+      due: '',
+      web: '',
+    };
+
+    /**3. Get all Row */
+    for (let j = 0; j < columCount; j++) {
+      let cellValue = await $(
+        `//table[@id="table1"]/tbody/tr[${i + 1}]/td[${j + 1}]`
+      );
+      console.log(`>> Cell Value: ${await cellValue.getText()}`);
+      if (j === 0) personObj.lastName = await cellValue.getText();
+      if (j === 1) personObj.firstName = await cellValue.getText();
+      if (j === 2) personObj.email = await cellValue.getText();
+      if (j === 3) personObj.due = await cellValue.getText();
+      if (j === 4) personObj.web = await cellValue.getText();
+    }
+    arrPersons.push(personObj);
+  }
+  console.log(JSON.stringify(arrPersons));
+
+  /**4. Get single row {Based on a condition} */
+  let arrPersons2 = [];
+  for (let i = 0; i < rowCount; i++) {
+    let personObj = {
+      lastName: '',
+      firstName: '',
+      email: '',
+      due: '',
+      web: '',
+    };
+    for (let j = 0; j < columCount; j++) {
+      let cellValue = await $(
+        `//table[@id="table1"]/tbody/tr[${i + 1}]/td[${j + 1}]`
+      );
+      let firstName = await $(`//table[@id="table1"]/tbody/tr[${i + 1}]/td[2]`);
+      if ((await firstName.getText()) === 'Jason') {
+        if (j === 0) personObj.lastName = await cellValue.getText();
+        if (j === 1) personObj.firstName = await cellValue.getText();
+        if (j === 2) personObj.email = await cellValue.getText();
+        if (j === 3) personObj.due = await cellValue.getText();
+        if (j === 4) personObj.web = await cellValue.getText();
+      }
+    }
+    if (personObj.firstName) {
+      arrPersons2.push(personObj);
+    }
+  }
+  /**
+   * 5. Get a Single cell Value {based fron another cell}
+   */
+  let arrNew = [];
+  for (let i = 0; i < rowCount; i++) {
+    let price = await $(
+      `//table[@id="table1"]/tbody/tr[${i + 1}]/td[4]`
+    ).getText();
+    let firstName = (
+      await $(`//table[@id="table1"]/tbody/tr[${i + 1}]/td[2]`)
+    ).getText();
+    if (+price.replace('$', '') > 50) {
+      arrNew.push(firstName);
+    }
+  }
+  console.log(JSON.stringify(arrNew));
 });

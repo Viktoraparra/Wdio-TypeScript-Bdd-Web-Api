@@ -5,7 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "wdio": "wdio run ./wdio.conf.ts"
+    "wdio": "wdio run ./wdio.conf.ts",
+    "demo": "npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@demo'",
+    "web": "npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@web'",
+    "invt": "npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@invt'",
+    "regression": "npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@regression'"
   },
   "keywords": [
     "webdriverio",

@@ -1,6 +1,6 @@
 Feature: Web Interactions
 
-    @web
+    @web @regression
     Scenario Outline: Demo Web Interactions with Inputs
         Given A web page is opened in <text>
         When Perfom web interactions with inputs
@@ -9,7 +9,7 @@ Feature: Web Interactions
             | TestID    | text   |
             | WEB_TC001 | Inputs |
 
-    @web
+    @web @regression
     Scenario Outline: Demo Web Interactions with Dropdowns
         Given A web page is opened in <text>
         When Perfom web interactions with Dropdown
@@ -18,7 +18,7 @@ Feature: Web Interactions
             | TestID    | text     |
             | WEB_TC002 | Dropdown |
 
-    @web
+    @web @regression
     Scenario Outline: Demo Web Interactions with Checkboxes
         Given A web page is opened in <text>
         When Perfom web interactions with Checkboxes
@@ -27,7 +27,7 @@ Feature: Web Interactions
             | TestID    | text       |
             | WEB_TC003 | Checkboxes |
 
-    @web
+    @web @regression
     Scenario Outline: Demo Web Interactions with Windows
         Given A web page is opened in <text>
         When Perfom web interactions with Multiple Windows
@@ -36,7 +36,7 @@ Feature: Web Interactions
             | TestID    | text             |
             | WEB_TC004 | Multiple Windows |
 
-    @web
+    @web @regression
     Scenario Outline: Demo Web Interactions with Browser Alerts
         Given A web page is opened in <text>
         When Perfom web interactions with Browsers alerts
@@ -45,7 +45,7 @@ Feature: Web Interactions
             | TestID    | text              |
             | WEB_TC005 | JavaScript Alerts |
 
-    @web
+    @web @regression
     Scenario Outline: Demo Web Interactions with FileUpload
         Given A web page is opened in <text>
         When Perfom web interactions with FileUpload
@@ -54,7 +54,7 @@ Feature: Web Interactions
             | TestID    | text        |
             | WEB_TC006 | File Upload |
 
-    @web
+    @web @regression
     Scenario Outline: Demo Web Interactions with Frames
         Given A web page is opened in <text>
         When Perfom web interactions with Frames
@@ -63,7 +63,7 @@ Feature: Web Interactions
             | TestID    | text   |
             | WEB_TC007 | Frames |
 
-    @web
+    @web @regression
     Scenario Outline: Demo Web Interactions with Keypress actions
         Given A web page is opened in <text>
         When Perfom web interactions with keypress actions
