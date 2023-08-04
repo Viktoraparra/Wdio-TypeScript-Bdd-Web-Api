@@ -3,7 +3,8 @@ import chai from 'chai';
 
 Given(/^Login to inventory web app$/, async () => {
   /*1. Login to Inventory App*/
-  await browser.url('http://saucedemo.com');
+  // @ts-ignore
+  await browser.url(browser.config.sauseDemoURL);
   await browser.setTimeout({ implicit: 15000, pageLoad: 10000 });
   await browser.maximizeWindow();
 
@@ -14,6 +15,8 @@ Given(/^Login to inventory web app$/, async () => {
     '//div[@class="error-message-container error"]'
   );
   /* 2. Login to Inventory */
+  console.log(`using env variables : ${process.env.TEST_STD_USERNAME}`);
+
   try {
     await userNameField.setValue('standard_user');
     await passwordField.setValue('secret_sauce');

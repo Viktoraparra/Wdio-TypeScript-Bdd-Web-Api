@@ -1,3 +1,9 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
+let headless = process.env.HEADLESS;
+let debug = process.env.DEBUG;
+
 import type { Options } from '@wdio/types';
 export const config: Options.Testrunner = {
   //
@@ -62,9 +68,23 @@ export const config: Options.Testrunner = {
       browserName: 'chrome',
       'goog:chromeOptions': {
         // to run chrome headless the following flags are required
-        // '--headless', '--disable-gpu',
+        // Additional chrome options:
+        // this are flags requiered for unix box
+        // => '--headless',=> '--no-sandbox', '--disable-gpu', 'window-size=1920,1080',
+        // => '--disable-dev-shm-usage'
+        // '--proxy-server', 'binary' '--auth-server-whitelist="_"'
         // (see https://developers.google.com/web/updates/2017/04/headless-chrome)
-        args: ['--disable-web-security '],
+        args:
+          headless?.toUpperCase() === 'Y'
+            ? [
+                '--disable-web-security',
+                '--headless',
+                '--disable-dev-shm-usage',
+                '--no-sandbox',
+                '--disable-gpu',
+                'window-size=1920,1080',
+              ]
+            : ['window-size=1920,1080'],
       },
       acceptInsecureCerts: true,
       // Can be define timeouts
@@ -79,7 +99,7 @@ export const config: Options.Testrunner = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: 'error',
+  logLevel: debug?.toUpperCase() === 'Y' ? 'info' : 'error',
   //
   // Set specific log levels per logger
   // loggers:
