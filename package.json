@@ -5,7 +5,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "wdio": "wdio run ./wdio.conf.ts"
+    "wdio": "wdio run ./wdio.conf.ts",
+    "demo": "export DEBUG=N && export HEADLESS=N && npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@demo'",
+    "web": "export HEADLESS=Y && npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@web'",
+    "qa:debu": "export DEBUG=Y &&export HEADLESS=N && npx wdio wdio.qa.conf.ts --cucumberOpts.tagExpression='@demo'",
+    "qa:demo": "export HEADLESS=N && npx wdio wdio.qa.conf.ts --cucumberOpts.tagExpression='@demo'",
+    "qa:web": "export HEADLESS=Y && npx wdio wdio.qa.conf.ts --cucumberOpts.tagExpression='@web'",
+    "invt": "export HEADLESS=Y && npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@invt'",
+    "regression": "npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@regression'"
   },
   "keywords": [
     "webdriverio",
@@ -29,6 +36,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "chai": "^4.3.7"
+    "chai": "^4.3.7",
+    "dotenv": "^16.3.1"
   }
 }
