@@ -1,4 +1,6 @@
+// @ts-nocheck
 import dotenv from 'dotenv';
+import allure from '@wdio/allure-reporter';
 import fs from 'fs';
 dotenv.config();
 
@@ -13,6 +15,7 @@ export const config: Options.Testrunner = {
   // ====================
   // WebdriverIO supports running e2e tests as well as unit and component tests.
   runner: 'local',
+
   autoCompileOpts: {
     autoCompile: true,
     tsNodeOpts: {
@@ -37,6 +40,7 @@ export const config: Options.Testrunner = {
   // then the current working directory is where your `package.json` resides, so `wdio`
   // will be called from there.
   //
+  currentDt: new Date(),
   specs: [`./test/features/**/*.feature`],
   // Patterns to exclude.
   exclude: [
@@ -175,7 +179,7 @@ export const config: Options.Testrunner = {
     [
       'allure',
       {
-        outputDir: 'results/allure-results',
+        outputDir: 'allure-results',
         disableWebdriverStepsReporting: true,
         useCucumberStepReporter: true,
       },
@@ -186,7 +190,7 @@ export const config: Options.Testrunner = {
   // If you are using Cucumber you need to specify the location of your step definitions.
   cucumberOpts: {
     // <string[]> (file/dir) require files before executing features
-    require: ['./test/features/step-definitions/**/*.ts'],
+    require: ['./test/features/step-definitions/**/*.js'],
     // <boolean> show full backtrace for errors
     backtrace: false,
     // <string[]> ("extension:module") require files with the given EXTENSION after requiring MODULE (repeatable)
@@ -222,11 +226,11 @@ export const config: Options.Testrunner = {
    * @param {object} config wdio configuration object
    * @param {Array.<Object>} capabilities list of capabilities details
    */
-  // onPrepare: function (config, capabilities) {
-  // if (process.env.RUNNER === 'LOCAL' && fs.existsSync('./allure-results')) {
-  //   fs.rmdirSync('./allure-results', { recursive: true });
-  // }
-  // },
+  onPrepare: function (config, capabilities) {
+    if (process.env.RUNNER === 'LOCAL' && fs.existsSync('./allure-results')) {
+      fs.rmdirSync('./allure-results', { recursive: true });
+    }
+  },
   /**
    * Gets executed before a worker process is spawned and can be used to initialise specific service
    * for that worker as well as modify runtime environments in an async fashion.
@@ -284,24 +288,26 @@ export const config: Options.Testrunner = {
    * @param {string}                   uri      path to feature file
    * @param {GherkinDocument.IFeature} feature  Cucumber feature object
    */
-  // beforeFeature: function (uri, feature) {
-  // },
+  beforeFeature: function (uri, feature) {
+    browser.options['environment'] = config.environment;
+    browser.options['sauseDemoURL'] = config.baseUrl;
+  },
   /**
    *
    * Runs before a Cucumber Scenario.
    * @param {ITestCaseHookParameter} world    world object containing information on pickle and test step
    * @param {object}                 context  Cucumber World object
    */
-  // beforeScenario: function (world, context) {
-  // let arr = world.pickle.name.split(/:/);
-  // // @ts-ignore
-  // if (arr.length > 0) browser.options.testid = arr[0];
-  // // @ts-ignore
-  // if (!browser.options.testid)
-  //   throw Error(
-  //     `Error getting testid for current scenario: ${world.pickle.name}`
-  // );
-  // },
+  beforeScenario: function (world, context) {
+    let arr = world.pickle.name.split(/:/);
+    // @ts-ignore
+    if (arr.length > 0) browser.options.testid = arr[0];
+    // @ts-ignore
+    if (!browser.options.testid)
+      throw Error(
+        `Error getting testid for current scenario: ${world.pickle.name}`
+      );
+  },
   /**
    *
    * Runs before a Cucumber Step.
@@ -309,9 +315,9 @@ export const config: Options.Testrunner = {
    * @param {IPickle}            scenario scenario pickle
    * @param {object}             context  Cucumber World object
    */
-  // beforeStep: function (step, scenario, context) {
-  // if (browser.options.testid) context.testid = browser.options.testid;
-  // },
+  beforeStep: function (step, scenario, context) {
+    if (browser.options.testid) context.testid = browser.options.testid;
+  },
   /**
    *
    * Runs after a Cucumber Step.
@@ -324,10 +330,10 @@ export const config: Options.Testrunner = {
    * @param {object}             context          Cucumber World object
    */
   afterStep: async function (step, scenario, result, context) {
-    console.log(`>> Step: ${JSON.stringify(step)}`);
-    console.log(`>> Scenario: ${JSON.stringify(scenario)}`);
-    console.log(`>> Results: ${JSON.stringify(result)}`);
-    console.log(`>> Context: ${JSON.stringify(context)}`);
+    // console.log(`>> Step: ${JSON.stringify(step)}`);
+    // console.log(`>> Scenario: ${JSON.stringify(scenario)}`);
+    // console.log(`>> Results: ${JSON.stringify(result)}`);
+    // console.log(`>> Context: ${JSON.stringify(context)}`);
     if (!result.passed) {
       await browser.takeScreenshot();
     }
@@ -351,11 +357,11 @@ export const config: Options.Testrunner = {
    * @param {string}                   uri      path to feature file
    * @param {GherkinDocument.IFeature} feature  Cucumber feature object
    */
-  // afterFeature: function (uri, feature) {
-  // Add more env details
-  // allure.addEnvironment('Environment: ', browser.options.environment);
-  // allure.addEnvironment('Middleware: ', 'SIT-EAI');
-  // },
+  afterFeature: function (uri, feature) {
+    // Add more env details
+    allure.addEnvironment('Environment: ', browser.options.environment);
+    allure.addEnvironment('Middleware: ', 'SIT-EAI');
+  },
 
   /**
    * Runs after a WebdriverIO command gets executed

@@ -1,8 +1,10 @@
-import { Given, When, Then } from '@wdio/cucumber-framework';
-// const expectchai = require('chai').expect;
+import { Given, When, Then } from '@cucumber/cucumber';
 import chai from 'chai';
+import reporter from '../../helper/reporter.js';
 
 Given(/^Google page is opened$/, async () => {
+  // logger.info(`${this.testid}: Opening google!`);
+  reporter.addStep(this.testid, 'info', 'Opening Google home page...');
   console.log(await browser);
 
   await browser.url('https://www.google.com');
@@ -12,6 +14,11 @@ Given(/^Google page is opened$/, async () => {
 });
 
 When(/^Search with (.*)$/, async (searchItem) => {
+  reporter.addStep(
+    this.testid,
+    'info',
+    `Searching: ${searchItem} in Google...`
+  );
   console.log(`>>SearchItem: ${searchItem}`);
   let ele = await $('//*[@id="APjFqb"]');
   await ele.setValue(searchItem);
@@ -19,6 +26,7 @@ When(/^Search with (.*)$/, async (searchItem) => {
 });
 
 Then(/^Click on the first search result$/, async () => {
+  reporter.addStep(this.testid, 'info', `Clicking on first search items...`);
   let ele = await $('<h3>');
   await ele.click();
 });
