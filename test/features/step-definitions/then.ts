@@ -1,13 +1,16 @@
 import { Then } from '@wdio/cucumber-framework';
 import chai from 'chai';
 
-Then(/^Inventory page should list (.*)$/, async (NumberOfProducts) => {
-  if (!NumberOfProducts)
-    throw Error(`Invalid number provided: ${NumberOfProducts}`);
+Then(
+  /^Inventory page should list (.*)|s?(.*)$/,
+  async (negativeCheck, NumberOfProducts) => {
+    if (!NumberOfProducts)
+      throw Error(`Invalid number provided: ${NumberOfProducts}`);
 
-  let eleArray = await $$('.inventory_item');
-  chai.expect(eleArray.length).to.equal(parseInt(NumberOfProducts));
-});
+    let eleArray = await $$('.inventory_item');
+    chai.expect(eleArray.length).to.equal(parseInt(NumberOfProducts));
+  }
+);
 /**
  * Steps:
  * 1. Get Price List

@@ -2,8 +2,7 @@ import { config as baseConfig } from '../wdio.conf.js';
 export const config = Object.assign(baseConfig, {
   //All Test env specific key val pairs
   environment: 'STG',
-  sauseDemoURL: 'http://www.saucedemo.com',
-  regresBaseURL: 'http//regres.in',
+  baseUrl: 'https://www.saucedemo.com',
   sqlConfig: {
     user: process.env.DB_STG_USER,
     password: process.env.DB_STG_PASSWORD,

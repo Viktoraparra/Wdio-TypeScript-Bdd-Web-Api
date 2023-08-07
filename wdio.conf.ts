@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import fs from 'fs';
 dotenv.config();
 
 let headless = process.env.HEADLESS;
@@ -36,7 +37,7 @@ export const config: Options.Testrunner = {
   // then the current working directory is where your `package.json` resides, so `wdio`
   // will be called from there.
   //
-  specs: ['./test/features/**/*.feature'],
+  specs: [`./test/features/**/*.feature`],
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
@@ -66,6 +67,7 @@ export const config: Options.Testrunner = {
   capabilities: [
     {
       browserName: 'chrome',
+      acceptInsecureCerts: true,
       'goog:chromeOptions': {
         // to run chrome headless the following flags are required
         // Additional chrome options:
@@ -86,10 +88,16 @@ export const config: Options.Testrunner = {
               ]
             : ['window-size=1920,1080'],
       },
-      acceptInsecureCerts: true,
       // Can be define timeouts
-      // timeouts: { implicit: 15000, pageLoad: 20000, script: 20000 },
+      // timeouts: { implicit: 10000, pageLoad: 20000, script: 30000 },
     },
+    // {
+    //     maxInstances: 3,
+    //     //
+    //     browserName: 'firefox',
+    //     acceptInsecureCerts: true,
+    //     timeouts: { implicit: 10000, pageLoad: 20000, script: 30000 },
+    // }
   ],
 
   //
@@ -99,6 +107,7 @@ export const config: Options.Testrunner = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
+  // debug?.toUpperCase() === 'Y' ? 'info' : 'error'
   logLevel: debug?.toUpperCase() === 'Y' ? 'info' : 'error',
   //
   // Set specific log levels per logger
@@ -161,13 +170,23 @@ export const config: Options.Testrunner = {
   // Test reporter for stdout.
   // The only one supported by default is 'dot'
   // see also: https://webdriver.io/docs/dot-reporter
-  reporters: ['spec', ['allure', { outputDir: 'results/allure-results' }]],
+  reporters: [
+    'spec',
+    [
+      'allure',
+      {
+        outputDir: 'results/allure-results',
+        disableWebdriverStepsReporting: true,
+        useCucumberStepReporter: true,
+      },
+    ],
+  ],
 
   //
   // If you are using Cucumber you need to specify the location of your step definitions.
   cucumberOpts: {
     // <string[]> (file/dir) require files before executing features
-    require: ['./test/features/step-definitions/*.ts'],
+    require: ['./test/features/step-definitions/**/*.ts'],
     // <boolean> show full backtrace for errors
     backtrace: false,
     // <string[]> ("extension:module") require files with the given EXTENSION after requiring MODULE (repeatable)
@@ -183,7 +202,7 @@ export const config: Options.Testrunner = {
     // <boolean> fail if there are any undefined or pending steps
     strict: false,
     // <string> (expression) only execute the features or scenarios with tags matching the expression
-    tagExpression: '@invt',
+    tagExpression: '@demo',
     // <number> timeout for step definitions
     timeout: 60000,
     // <boolean> Enable this config to treat undefined definitions as warnings.
@@ -204,6 +223,9 @@ export const config: Options.Testrunner = {
    * @param {Array.<Object>} capabilities list of capabilities details
    */
   // onPrepare: function (config, capabilities) {
+  // if (process.env.RUNNER === 'LOCAL' && fs.existsSync('./allure-results')) {
+  //   fs.rmdirSync('./allure-results', { recursive: true });
+  // }
   // },
   /**
    * Gets executed before a worker process is spawned and can be used to initialise specific service
@@ -243,6 +265,10 @@ export const config: Options.Testrunner = {
    * @param {object}         browser      instance of created browser/device session
    */
   // before: function (capabilities, specs) {
+  // browser.options['environment'] = config.environment;
+  // browser.options['sauseDemoURL'] = config.sauseDemoURL;
+  // browser.options['reqresBaseURL'] = config.reqresBaseURL;
+  // browser.options['nopeCommerceBaseURL'] = config.nopeCommerceBaseURL;
   // },
   /**
    * Runs before a WebdriverIO command gets executed.
@@ -267,6 +293,14 @@ export const config: Options.Testrunner = {
    * @param {object}                 context  Cucumber World object
    */
   // beforeScenario: function (world, context) {
+  // let arr = world.pickle.name.split(/:/);
+  // // @ts-ignore
+  // if (arr.length > 0) browser.options.testid = arr[0];
+  // // @ts-ignore
+  // if (!browser.options.testid)
+  //   throw Error(
+  //     `Error getting testid for current scenario: ${world.pickle.name}`
+  // );
   // },
   /**
    *
@@ -276,6 +310,7 @@ export const config: Options.Testrunner = {
    * @param {object}             context  Cucumber World object
    */
   // beforeStep: function (step, scenario, context) {
+  // if (browser.options.testid) context.testid = browser.options.testid;
   // },
   /**
    *
@@ -288,8 +323,15 @@ export const config: Options.Testrunner = {
    * @param {number}             result.duration  duration of scenario in milliseconds
    * @param {object}             context          Cucumber World object
    */
-  // afterStep: function (step, scenario, result, context) {
-  // },
+  afterStep: async function (step, scenario, result, context) {
+    console.log(`>> Step: ${JSON.stringify(step)}`);
+    console.log(`>> Scenario: ${JSON.stringify(scenario)}`);
+    console.log(`>> Results: ${JSON.stringify(result)}`);
+    console.log(`>> Context: ${JSON.stringify(context)}`);
+    if (!result.passed) {
+      await browser.takeScreenshot();
+    }
+  },
   /**
    *
    * Runs after a Cucumber Scenario.
@@ -301,6 +343,7 @@ export const config: Options.Testrunner = {
    * @param {object}                 context          Cucumber World object
    */
   // afterScenario: function (world, result, context) {
+
   // },
   /**
    *
@@ -309,6 +352,9 @@ export const config: Options.Testrunner = {
    * @param {GherkinDocument.IFeature} feature  Cucumber feature object
    */
   // afterFeature: function (uri, feature) {
+  // Add more env details
+  // allure.addEnvironment('Environment: ', browser.options.environment);
+  // allure.addEnvironment('Middleware: ', 'SIT-EAI');
   // },
 
   /**

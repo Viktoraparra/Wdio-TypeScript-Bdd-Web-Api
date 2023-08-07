@@ -8,11 +8,14 @@
     "wdio": "wdio run ./wdio.conf.ts",
     "demo": "export DEBUG=N && export HEADLESS=N && npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@demo'",
     "web": "export HEADLESS=Y && npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@web'",
-    "qa:debu": "export DEBUG=Y &&export HEADLESS=N && npx wdio wdio.qa.conf.ts --cucumberOpts.tagExpression='@demo'",
-    "qa:demo": "export HEADLESS=N && npx wdio wdio.qa.conf.ts --cucumberOpts.tagExpression='@demo'",
-    "qa:web": "export HEADLESS=Y && npx wdio wdio.qa.conf.ts --cucumberOpts.tagExpression='@web'",
     "invt": "export HEADLESS=Y && npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@invt'",
-    "regression": "npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@regression'"
+    "regression": "npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@regression'",
+    "stg:demo": "export DEBUG=N && export HEADLESS=N && wdio run config/wdio.stg.conf.ts --cucumberOpts.tagExpression='@demo'",
+    "stg:smoke": "export DEBUG=N&& export HEADLESS=Y&& wdio run config/wdio.stg.conf.ts --cucumberOpts.tagExpression='@smoke'",
+    "qa:invt": "export DEBUG=N && export HEADLESS=N && npx wdio config/wdio.qa.conf.ts --cucumberOpts.tagExpression='@invt'",
+    "qa:debu": "export DEBUG=Y && export HEADLESS=N && npx wdio config/wdio.qa.conf.ts --cucumberOpts.tagExpression='@demo'",
+    "qa:demo": "export HEADLESS=N && npx wdio config/wdio.qa.conf.ts --cucumberOpts.tagExpression='@demo'",
+    "qa:web": "export HEADLESS=Y && npx wdio config/wdio.qa.conf.ts --cucumberOpts.tagExpression='@web'"
   },
   "keywords": [
     "webdriverio",
@@ -32,11 +35,12 @@
     "@wdio/cucumber-framework": "^8.14.0",
     "@wdio/local-runner": "^8.14.2",
     "@wdio/spec-reporter": "^8.14.0",
+    "chai": "^4.3.7",
+    "dotenv": "^16.3.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "chai": "^4.3.7",
-    "dotenv": "^16.3.1"
+    "chromedriver": "^115.0.0"
   }
 }

@@ -3,6 +3,8 @@ import { Given, When, Then } from '@wdio/cucumber-framework';
 import chai from 'chai';
 
 Given(/^Google page is opened$/, async () => {
+  console.log(await browser);
+
   await browser.url('https://www.google.com');
   await browser.pause(2000);
   console.log('After opening Browser');
