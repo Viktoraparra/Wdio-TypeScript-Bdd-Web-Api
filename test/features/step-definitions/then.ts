@@ -1,11 +1,11 @@
-import { Then } from '@wdio/cucumber-framework';
-import chai from 'chai';
+import { Then } from "@cucumber/cucumber";
+import chai from "chai";
 
 Then(/^Inventory page should list (.*)$/, async (NumberOfProducts) => {
   if (!NumberOfProducts)
     throw Error(`Invalid number provided: ${NumberOfProducts}`);
 
-  let eleArray = await $$('.inventory_item');
+  let eleArray = await $$(".inventory_item");
   chai.expect(eleArray.length).to.equal(parseInt(NumberOfProducts));
 });
 /**
@@ -33,7 +33,7 @@ Then(/^Validate all products have valid price$/, async () => {
   }
   console.log(`>> price with $: ${priceStrArr}`);
 
-  let priceNumArr = priceStrArr.map((ele) => +ele.replace('$', ''));
+  let priceNumArr = priceStrArr.map((ele) => +ele.replace("$", ""));
   console.log(`>> price with $: ${priceNumArr}`);
 
   let InvalidPrice = priceNumArr.filter((ele) => ele <= 0);
