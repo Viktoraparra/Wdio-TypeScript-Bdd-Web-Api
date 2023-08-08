@@ -1,25 +1,25 @@
-import { Given, When, Then } from '@cucumber/cucumber';
-import chai from 'chai';
-import reporter from '../../helper/reporter';
+import { Given, When, Then } from "@cucumber/cucumber";
+import chai from "chai";
+import reporter from "../../helper/reporter.js";
 
 Given(/^Google page is opened$/, async () => {
-  // console.log(this.testid);
-  // reporter.addStep(this.testid, "info", "Opening Google home page...")
-  await browser.url('https://www.google.com');
+  // console.log(`>> testid: ${this.testid}`);
+  // reporter.addStep(this.testid, "info", "Opening Google home page...");
+  await browser.url("https://www.google.com");
   await browser.pause(2000);
-  console.log('After opening Browser');
-  console.log(`>> browser Obj: ${JSON.stringify(browser)}`);
+  console.log("After opening Browser");
+  // console.log(`>> browser Obj: ${JSON.stringify(browser)}`);
 });
 
 When(/^Search with (.*)$/, async (searchItem) => {
   console.log(`>>SearchItem: ${searchItem}`);
   let ele = await $('//*[@id="APjFqb"]');
   await ele.setValue(searchItem);
-  await browser.keys('Enter');
+  await browser.keys("Enter");
 });
 
 Then(/^Click on the first search result$/, async () => {
-  let ele = await $('<h3>');
+  let ele = await $("<h3>");
   await ele.click();
 });
 
@@ -29,7 +29,7 @@ Then(/^URL should match (.*)$/, async (ExpectedURL) => {
     async () => {
       return (
         (await browser.getTitle()) ===
-        'WebdriverIO · Marco de prueba de automatización móvil y navegador de próxima generación para Node.js | WebdriverIO'
+        "WebdriverIO · Marco de prueba de automatización móvil y navegador de próxima generación para Node.js | WebdriverIO"
       );
     },
     {
@@ -43,7 +43,7 @@ Then(/^URL should match (.*)$/, async (ExpectedURL) => {
 });
 
 Given(/^A web page is opened in (.*)$/, async (text) => {
-  await browser.url('https://the-internet.herokuapp.com/');
+  await browser.url("https://the-internet.herokuapp.com/");
   await browser.setTimeout({ implicit: 2000, pageLoad: 2000 });
   await browser.maximizeWindow();
 
@@ -57,7 +57,7 @@ Given(/^A web page is opened in (.*)$/, async (text) => {
 
 When(/^Perfom web interactions with inputs$/, async () => {
   let textField = await $('//input[@type="number"]');
-  await textField.setValue('12345');
+  await textField.setValue("12345");
 
   await textField.clearValue();
 
@@ -77,13 +77,13 @@ When(/^Perfom web interactions with inputs$/, async () => {
 When(/^Perfom web interactions with Dropdown$/, async () => {
   // Select by attribute, text or index
   let dropdownField = await $('//select[@id="dropdown"]');
-  await dropdownField.selectByAttribute('value', '1');
+  await dropdownField.selectByAttribute("value", "1");
 
-  await dropdownField.selectByVisibleText('Option 2');
+  await dropdownField.selectByVisibleText("Option 2");
 
   await dropdownField.selectByIndex(1);
 
-  let arrayDropdownEle = await $$('//select/option');
+  let arrayDropdownEle = await $$("//select/option");
   for (let i = 0; i < arrayDropdownEle.length; i++) {
     let ele = arrayDropdownEle[i];
     console.log(await ele.getText());
@@ -136,9 +136,9 @@ When(/^Perfom web interactions with Multiple Windows$/, async () => {
     console.log(`>> Win Handle: ${windowHandle[i]}`);
     await browser.switchToWindow(windowHandle[i]);
     currentWinTitle = await browser.getTitle();
-    if (currentWinTitle === 'Elemental Selenium | Elemental Selenium') {
+    if (currentWinTitle === "Elemental Selenium | Elemental Selenium") {
       await browser.switchToWindow(windowHandle[i]);
-      let header3Text = (await $('<h1>')).getText();
+      let header3Text = (await $("<h1>")).getText();
       console.log(`>> header Text Selected: ${header3Text}`);
 
       break;
@@ -147,10 +147,10 @@ When(/^Perfom web interactions with Multiple Windows$/, async () => {
 
   // switch back to the main windows
   await browser.switchToWindow(parentWinHandle);
-  let mainTitle = await $('<h3>');
+  let mainTitle = await $("<h3>");
   console.log(await mainTitle.getText());
 
-  chai.expect(await mainTitle).to.be.equal('Opening a new window');
+  chai.expect(await mainTitle).to.be.equal("Opening a new window");
 });
 
 When(/^Perfom web interactions with Browsers alerts$/, async () => {
@@ -182,7 +182,7 @@ When(/^Perfom web interactions with Browsers alerts$/, async () => {
   (await $('//button[@onClick="jsPrompt()"]')).click();
   if (await browser.isAlertOpen()) {
     let text = await browser.getAlertText();
-    await browser.sendAlertText('Mi Name is Victor');
+    await browser.sendAlertText("Mi Name is Victor");
     console.log(text);
     await browser.acceptAlert();
   }
@@ -220,9 +220,9 @@ When(/^Perfom web interactions with Frames$/, async () => {
   let iframeElement = await $('//iframe[@id="mce_0_ifr"]');
   await browser.switchToFrame(iframeElement);
 
-  let bodyField = await $('#tinymce');
+  let bodyField = await $("#tinymce");
   await bodyField.clearValue();
-  await bodyField.addValue('This is a text inputing text in Iframe!!!');
+  await bodyField.addValue("This is a text inputing text in Iframe!!!");
 
   await browser.pause(2000);
   // this is for returning to parent Frame
@@ -239,13 +239,13 @@ When(/^Perfom web interactions with keypress actions$/, async () => {
   let iframeElement = await $('//iframe[@id="mce_0_ifr"]');
   await browser.switchToFrame(iframeElement);
 
-  let bodyField = await $('#tinymce');
+  let bodyField = await $("#tinymce");
   await bodyField.clearValue();
 
   //Performing Ctrl + A (Ctrl = Meta)
-  await browser.keys(['Command', 'A']);
+  await browser.keys(["Command", "A"]);
 
-  await browser.keys('Delete');
+  await browser.keys("Delete");
 
   await browser.pause(2000);
 });
@@ -262,11 +262,11 @@ When(/^Perfom web interactions with web Tables$/, async () => {
   let arrPersons = [];
   for (let i = 0; i < rowCount; i++) {
     let personObj = {
-      lastName: '',
-      firstName: '',
-      email: '',
-      due: '',
-      web: '',
+      lastName: "",
+      firstName: "",
+      email: "",
+      due: "",
+      web: "",
     };
 
     /**3. Get all Row */
@@ -289,18 +289,18 @@ When(/^Perfom web interactions with web Tables$/, async () => {
   let arrPersons2 = [];
   for (let i = 0; i < rowCount; i++) {
     let personObj = {
-      lastName: '',
-      firstName: '',
-      email: '',
-      due: '',
-      web: '',
+      lastName: "",
+      firstName: "",
+      email: "",
+      due: "",
+      web: "",
     };
     for (let j = 0; j < columCount; j++) {
       let cellValue = await $(
         `//table[@id="table1"]/tbody/tr[${i + 1}]/td[${j + 1}]`
       );
       let firstName = await $(`//table[@id="table1"]/tbody/tr[${i + 1}]/td[2]`);
-      if ((await firstName.getText()) === 'Jason') {
+      if ((await firstName.getText()) === "Jason") {
         if (j === 0) personObj.lastName = await cellValue.getText();
         if (j === 1) personObj.firstName = await cellValue.getText();
         if (j === 2) personObj.email = await cellValue.getText();
@@ -323,7 +323,7 @@ When(/^Perfom web interactions with web Tables$/, async () => {
     let firstName = (
       await $(`//table[@id="table1"]/tbody/tr[${i + 1}]/td[2]`)
     ).getText();
-    if (+price.replace('$', '') > 50) {
+    if (+price.replace("$", "") > 50) {
       arrNew.push(firstName);
     }
   }

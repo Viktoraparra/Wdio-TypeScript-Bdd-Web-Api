@@ -1,0 +1,157 @@
+{
+  "gherkinDocument": {
+    "feature": {
+      "tags": [],
+      "location": { "line": 1, "column": 1 },
+      "language": "en",
+      "keyword": "Feature",
+      "name": "Demo feature",
+      "description": "",
+      "children": [
+        {
+          "scenario": {
+            "id": "9",
+            "tags": [
+              {
+                "location": { "line": 3, "column": 5 },
+                "name": "@demo",
+                "id": "7"
+              },
+              {
+                "location": { "line": 3, "column": 11 },
+                "name": "@regression",
+                "id": "8"
+              }
+            ],
+            "location": { "line": 4, "column": 5 },
+            "keyword": "Scenario Outline",
+            "name": "<TestID>: Run first demo feature",
+            "description": "",
+            "steps": [
+              {
+                "id": "0",
+                "location": { "line": 5, "column": 9 },
+                "keyword": "Given ",
+                "keywordType": "Context",
+                "text": "Google page is opened"
+              },
+              {
+                "id": "1",
+                "location": { "line": 6, "column": 9 },
+                "keyword": "When ",
+                "keywordType": "Action",
+                "text": "Search with <SearchItem>"
+              },
+              {
+                "id": "2",
+                "location": { "line": 7, "column": 9 },
+                "keyword": "Then ",
+                "keywordType": "Outcome",
+                "text": "Click on the first search result"
+              },
+              {
+                "id": "3",
+                "location": { "line": 8, "column": 9 },
+                "keyword": "Then ",
+                "keywordType": "Outcome",
+                "text": "URL should match <ExpectedURL>"
+              }
+            ],
+            "examples": [
+              {
+                "id": "6",
+                "tags": [],
+                "location": { "line": 10, "column": 9 },
+                "keyword": "Examples",
+                "name": "",
+                "description": "",
+                "tableHeader": {
+                  "id": "4",
+                  "location": { "line": 11, "column": 13 },
+                  "cells": [
+                    {
+                      "location": { "line": 11, "column": 15 },
+                      "value": "TestID"
+                    },
+                    {
+                      "location": { "line": 11, "column": 28 },
+                      "value": "SearchItem"
+                    },
+                    {
+                      "location": { "line": 11, "column": 41 },
+                      "value": "ExpectedURL"
+                    }
+                  ]
+                },
+                "tableBody": [
+                  {
+                    "id": "5",
+                    "location": { "line": 12, "column": 13 },
+                    "cells": [
+                      {
+                        "location": { "line": 12, "column": 15 },
+                        "value": "DEMO_TC001"
+                      },
+                      {
+                        "location": { "line": 12, "column": 28 },
+                        "value": "WDIO"
+                      },
+                      {
+                        "location": { "line": 12, "column": 41 },
+                        "value": "https://webdriver.io/es/"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "comments": [],
+    "uri": "/Users/viktoraparra/Desktop/ReposNew/Wdio-TypeScript-Bdd-Web-Api/test/features/demo.feature"
+  },
+  "pickle": {
+    "id": "14",
+    "uri": "/Users/viktoraparra/Desktop/ReposNew/Wdio-TypeScript-Bdd-Web-Api/test/features/demo.feature",
+    "astNodeIds": ["9", "5"],
+    "name": "DEMO_TC001: Run first demo feature",
+    "language": "en",
+    "steps": [
+      {
+        "id": "10",
+        "text": "Google page is opened",
+        "type": "Context",
+        "astNodeIds": ["0", "5"],
+        "keyword": "Given "
+      },
+      {
+        "id": "11",
+        "text": "Search with WDIO",
+        "type": "Action",
+        "astNodeIds": ["1", "5"],
+        "keyword": "When "
+      },
+      {
+        "id": "12",
+        "text": "Click on the first search result",
+        "type": "Outcome",
+        "astNodeIds": ["2", "5"],
+        "keyword": "Then "
+      },
+      {
+        "id": "13",
+        "text": "URL should match https://webdriver.io/es/",
+        "type": "Outcome",
+        "astNodeIds": ["3", "5"],
+        "keyword": "Then "
+      }
+    ],
+    "tags": [
+      { "name": "@demo", "astNodeId": "7" },
+      { "name": "@regression", "astNodeId": "8" }
+    ]
+  },
+  "testCaseStartedId": "45"
+}

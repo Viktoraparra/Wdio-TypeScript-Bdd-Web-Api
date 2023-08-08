@@ -1,7 +1,7 @@
 Feature: Web Interactions
 
     @web @regression
-    Scenario Outline: Demo Web Interactions with Inputs
+    Scenario Outline: <TestID>: Demo Web Interactions with Inputs
         Given A web page is opened in <text>
         When Perfom web interactions with inputs
 
@@ -10,7 +10,7 @@ Feature: Web Interactions
             | WEB_TC001 | Inputs |
 
     @web @regression
-    Scenario Outline: Demo Web Interactions with Dropdowns
+    Scenario Outline: <TestID>: Demo Web Interactions with Dropdowns
         Given A web page is opened in <text>
         When Perfom web interactions with Dropdown
 
@@ -19,7 +19,7 @@ Feature: Web Interactions
             | WEB_TC002 | Dropdown |
 
     @web @regression
-    Scenario Outline: Demo Web Interactions with Checkboxes
+    Scenario Outline: <TestID>: Demo Web Interactions with Checkboxes
         Given A web page is opened in <text>
         When Perfom web interactions with Checkboxes
 
@@ -28,7 +28,7 @@ Feature: Web Interactions
             | WEB_TC003 | Checkboxes |
 
     @web @regression
-    Scenario Outline: Demo Web Interactions with Windows
+    Scenario Outline: <TestID>: Demo Web Interactions with Windows
         Given A web page is opened in <text>
         When Perfom web interactions with Multiple Windows
 
@@ -37,7 +37,7 @@ Feature: Web Interactions
             | WEB_TC004 | Multiple Windows |
 
     @web @regression
-    Scenario Outline: Demo Web Interactions with Browser Alerts
+    Scenario Outline: <TestID>: Demo Web Interactions with Browser Alerts
         Given A web page is opened in <text>
         When Perfom web interactions with Browsers alerts
 
@@ -46,7 +46,7 @@ Feature: Web Interactions
             | WEB_TC005 | JavaScript Alerts |
 
     @web @regression
-    Scenario Outline: Demo Web Interactions with FileUpload
+    Scenario Outline: <TestID>: Demo Web Interactions with FileUpload
         Given A web page is opened in <text>
         When Perfom web interactions with FileUpload
 
@@ -55,7 +55,7 @@ Feature: Web Interactions
             | WEB_TC006 | File Upload |
 
     @web @regression
-    Scenario Outline: Demo Web Interactions with Frames
+    Scenario Outline: <TestID>: Demo Web Interactions with Frames
         Given A web page is opened in <text>
         When Perfom web interactions with Frames
 
@@ -64,7 +64,7 @@ Feature: Web Interactions
             | WEB_TC007 | Frames |
 
     @web @regression
-    Scenario Outline: Demo Web Interactions with Keypress actions
+    Scenario Outline: <TestID>: Demo Web Interactions with Keypress actions
         Given A web page is opened in <text>
         When Perfom web interactions with keypress actions
 
