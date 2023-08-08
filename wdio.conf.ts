@@ -1,4 +1,7 @@
+// @ts-nocheck
 import dotenv from 'dotenv';
+import allure from '@wdio/allure-reporter';
+import fs from 'fs';
 dotenv.config();
 
 let headless = process.env.HEADLESS;
@@ -161,7 +164,17 @@ export const config: Options.Testrunner = {
   // Test reporter for stdout.
   // The only one supported by default is 'dot'
   // see also: https://webdriver.io/docs/dot-reporter
-  reporters: ['spec', ['allure', { outputDir: 'results/allure-results' }]],
+  reporters: [
+    'spec',
+    [
+      'allure',
+      {
+        outputDir: 'allure-results',
+        disableWebdriverStepsReporting: true,
+        useCucumberStepReporter: true,
+      },
+    ],
+  ],
 
   //
   // If you are using Cucumber you need to specify the location of your step definitions.
@@ -183,7 +196,7 @@ export const config: Options.Testrunner = {
     // <boolean> fail if there are any undefined or pending steps
     strict: false,
     // <string> (expression) only execute the features or scenarios with tags matching the expression
-    tagExpression: '@invt',
+    tagExpression: '',
     // <number> timeout for step definitions
     timeout: 60000,
     // <boolean> Enable this config to treat undefined definitions as warnings.
@@ -242,8 +255,10 @@ export const config: Options.Testrunner = {
    * @param {Array.<String>} specs        List of spec file paths that are to be run
    * @param {object}         browser      instance of created browser/device session
    */
-  // before: function (capabilities, specs) {
-  // },
+  before: function (capabilities, specs) {
+    browser.options['environment'] = config.environment;
+    browser.options['baseUrl'] = config.baseUrl;
+  },
   /**
    * Runs before a WebdriverIO command gets executed.
    * @param {string} commandName hook command name
@@ -266,8 +281,16 @@ export const config: Options.Testrunner = {
    * @param {ITestCaseHookParameter} world    world object containing information on pickle and test step
    * @param {object}                 context  Cucumber World object
    */
-  // beforeScenario: function (world, context) {
-  // },
+  beforeScenario: function (world, context) {
+    let arr = world.pickle.name.split(/:/);
+    // @ts-ignore
+    if (arr.length > 0) browser.options.testid = arr[0];
+    // @ts-ignore
+    if (!browser.options.testid)
+      throw Error(
+        `Error getting testid for current scenario: ${world.pickle.name}`
+      );
+  },
   /**
    *
    * Runs before a Cucumber Step.
@@ -275,8 +298,9 @@ export const config: Options.Testrunner = {
    * @param {IPickle}            scenario scenario pickle
    * @param {object}             context  Cucumber World object
    */
-  // beforeStep: function (step, scenario, context) {
-  // },
+  beforeStep: function (step, scenario, context) {
+    if (browser.options.testid) context.testid = browser.options.testid;
+  },
   /**
    *
    * Runs after a Cucumber Step.
@@ -288,8 +312,15 @@ export const config: Options.Testrunner = {
    * @param {number}             result.duration  duration of scenario in milliseconds
    * @param {object}             context          Cucumber World object
    */
-  // afterStep: function (step, scenario, result, context) {
-  // },
+  afterStep: async function (step, scenario, result, context) {
+    // console.log(`>> Step: ${JSON.stringify(step)}`);
+    // console.log(`>> Scenario: ${JSON.stringify(scenario)}`);
+    // console.log(`>> Results: ${JSON.stringify(result)}`);
+    // console.log(`>> Context: ${JSON.stringify(context)}`);
+    if (!result.passed) {
+      await browser.takeScreenshot();
+    }
+  },
   /**
    *
    * Runs after a Cucumber Scenario.
@@ -308,8 +339,10 @@ export const config: Options.Testrunner = {
    * @param {string}                   uri      path to feature file
    * @param {GherkinDocument.IFeature} feature  Cucumber feature object
    */
-  // afterFeature: function (uri, feature) {
-  // },
+  afterFeature: function (uri, feature) {
+    allure.addEnvironment('Environment: ', browser.options.environment);
+    allure.addEnvironment('Middleware: ', 'SIT-EAI');
+  },
 
   /**
    * Runs after a WebdriverIO command gets executed

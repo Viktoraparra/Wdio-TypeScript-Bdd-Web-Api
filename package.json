@@ -33,10 +33,9 @@
     "@wdio/local-runner": "^8.14.2",
     "@wdio/spec-reporter": "^8.14.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
-  },
-  "dependencies": {
+    "typescript": "^5.1.6",
     "chai": "^4.3.7",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "winston": "^3.10.0"
   }
 }
