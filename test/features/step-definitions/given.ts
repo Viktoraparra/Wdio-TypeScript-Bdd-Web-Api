@@ -1,4 +1,4 @@
-import { Given } from '@wdio/cucumber-framework';
+import { Given } from '@cucumber/cucumber';
 import chai from 'chai';
 
 Given(/^Login to inventory web app$/, async () => {
