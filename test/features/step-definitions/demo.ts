@@ -1,10 +1,10 @@
 import { Given, When, Then } from '@cucumber/cucumber';
-// const expectchai = require('chai').expect;
 import chai from 'chai';
+import reporter from '../../helper/reporter';
 
 Given(/^Google page is opened$/, async () => {
   // console.log(this.testid);
-
+  // reporter.addStep(this.testid, "info", "Opening Google home page...")
   await browser.url('https://www.google.com');
   await browser.pause(2000);
   console.log('After opening Browser');
