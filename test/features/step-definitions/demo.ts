@@ -2,28 +2,29 @@ import { Given, When, Then } from "@cucumber/cucumber";
 import chai from "chai";
 import reporter from "../../helper/reporter.js";
 
-Given(/^Google page is opened$/, async () => {
+Given(/^Google page is opened$/, async function () {
   // console.log(`>> testid: ${this.testid}`);
-  // reporter.addStep(this.testid, "info", "Opening Google home page...");
+
+  reporter.addStep(this.testid, "info", "Opening Google home page...");
   await browser.url("https://www.google.com");
   await browser.pause(2000);
   console.log("After opening Browser");
   // console.log(`>> browser Obj: ${JSON.stringify(browser)}`);
 });
 
-When(/^Search with (.*)$/, async (searchItem) => {
+When(/^Search with (.*)$/, async function (searchItem) {
   console.log(`>>SearchItem: ${searchItem}`);
   let ele = await $('//*[@id="APjFqb"]');
   await ele.setValue(searchItem);
   await browser.keys("Enter");
 });
 
-Then(/^Click on the first search result$/, async () => {
+Then(/^Click on the first search result$/, async function () {
   let ele = await $("<h3>");
   await ele.click();
 });
 
-Then(/^URL should match (.*)$/, async (ExpectedURL) => {
+Then(/^URL should match (.*)$/, async function (ExpectedURL) {
   console.log(`ExpectedURL: ${ExpectedURL}`);
   await browser.waitUntil(
     async () => {
@@ -42,7 +43,7 @@ Then(/^URL should match (.*)$/, async (ExpectedURL) => {
   chai.expect(await url).to.be.equal(ExpectedURL);
 });
 
-Given(/^A web page is opened in (.*)$/, async (text) => {
+Given(/^A web page is opened in (.*)$/, async function (text) {
   await browser.url("https://the-internet.herokuapp.com/");
   await browser.setTimeout({ implicit: 2000, pageLoad: 2000 });
   await browser.maximizeWindow();
@@ -55,7 +56,7 @@ Given(/^A web page is opened in (.*)$/, async (text) => {
   await browser.pause(1000);
 });
 
-When(/^Perfom web interactions with inputs$/, async () => {
+When(/^Perfom web interactions with inputs$/, async function () {
   let textField = await $('//input[@type="number"]');
   await textField.setValue("12345");
 
@@ -74,7 +75,7 @@ When(/^Perfom web interactions with inputs$/, async () => {
   await browser.pause(2000);
 });
 
-When(/^Perfom web interactions with Dropdown$/, async () => {
+When(/^Perfom web interactions with Dropdown$/, async function () {
   // Select by attribute, text or index
   let dropdownField = await $('//select[@id="dropdown"]');
   await dropdownField.selectByAttribute("value", "1");
@@ -90,7 +91,7 @@ When(/^Perfom web interactions with Dropdown$/, async () => {
   }
 });
 
-When(/^Perfom web interactions with Checkboxes$/, async () => {
+When(/^Perfom web interactions with Checkboxes$/, async function () {
   let checkbox1Ele = await $('//form[@id="checkboxes"]/input[1]');
   let checkbox2Ele = await $('//form[@id="checkboxes"]/input[2]');
 
@@ -103,7 +104,7 @@ When(/^Perfom web interactions with Checkboxes$/, async () => {
   let checkboxes = await $('//form[@id="checkboxes"]');
 });
 
-When(/^Perfom web interactions with Multiple Windows$/, async () => {
+When(/^Perfom web interactions with Multiple Windows$/, async function () {
   /*
   Windows Handling 
   Steps:
@@ -153,7 +154,7 @@ When(/^Perfom web interactions with Multiple Windows$/, async () => {
   chai.expect(await mainTitle).to.be.equal("Opening a new window");
 });
 
-When(/^Perfom web interactions with Browsers alerts$/, async () => {
+When(/^Perfom web interactions with Browsers alerts$/, async function () {
   /*
   Handling Alerts
   methods used
@@ -197,7 +198,7 @@ by this way is possible to bypass the basic authentication
 */
 });
 
-When(/^Perfom web interactions with FileUpload$/, async () => {
+When(/^Perfom web interactions with FileUpload$/, async function () {
   /**
    * 5. File Upload
    */
@@ -210,7 +211,7 @@ When(/^Perfom web interactions with FileUpload$/, async () => {
   browser.pause(2000);
 });
 
-When(/^Perfom web interactions with Frames$/, async () => {
+When(/^Perfom web interactions with Frames$/, async function () {
   let linkFrames = await $('//a[@href="/iframe"]');
   await linkFrames.click();
 
@@ -229,7 +230,7 @@ When(/^Perfom web interactions with Frames$/, async () => {
   await browser.switchToParentFrame();
 });
 
-When(/^Perfom web interactions with keypress actions$/, async () => {
+When(/^Perfom web interactions with keypress actions$/, async function () {
   let linkFrames = await $('//a[@href="/iframe"]');
   await linkFrames.click();
 
@@ -250,7 +251,7 @@ When(/^Perfom web interactions with keypress actions$/, async () => {
   await browser.pause(2000);
 });
 
-When(/^Perfom web interactions with web Tables$/, async () => {
+When(/^Perfom web interactions with web Tables$/, async function () {
   /** 1.  Check number of rows and columns */
   let rowCount = await $$('//table[@id="table1"]/tbody/tr').length;
   chai.expect(rowCount).to.be.equal(4);

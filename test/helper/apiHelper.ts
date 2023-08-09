@@ -1,5 +1,5 @@
 import request from "supertest";
-import reporter from "./reporter";
+import reporter from "./reporter.js";
 
 //What is request
 // Example GET

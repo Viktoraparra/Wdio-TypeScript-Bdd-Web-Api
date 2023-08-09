@@ -1,6 +1,6 @@
-import { BeforeStep } from "@cucumber/cucumber";
+// import { BeforeStep } from "@cucumber/cucumber";
 
-BeforeStep(function () {
-  // @ts-ignore
-  this.testid = browser.options.testid;
-});
+// BeforeStep(function () {
+//   // @ts-ignore
+//   this.testid = browser.options.testid;
+// });
