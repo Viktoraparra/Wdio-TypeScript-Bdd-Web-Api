@@ -2,7 +2,7 @@ import { When } from "@cucumber/cucumber";
 import reporter from "../../helper/reporter.ts";
 import nopcommerceHomepage from "../../page-objects/nopcommerce.home.page.ts";
 
-When(/^An as (.*) user login to nopcommerce site$/, async (user) => {
+When(/^An as (.*) user login to nopcommerce site$/, async function (user) {
   if (!user) throw Error(`Given user: ${user} is not valid`);
   user = user.trim().toUpperCase();
   try {

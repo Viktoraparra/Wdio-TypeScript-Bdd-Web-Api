@@ -1,7 +1,7 @@
-Feature: Inventory
+Feature: Web Interactions with Inventory
 
-    @debug
-    Scenario Outline: <TestID>: Demo Inventory
+    @invt  @regression
+    Scenario Outline: <TestID>: Demo Web Interactions with Inventory of products
         Given As a standard user I login to inventory web app
             | UserType | Username                |
             | StdUser  | standard_user           |
@@ -13,5 +13,5 @@ Feature: Inventory
 
         Examples:
             | TestID     | NumberOfProducts |
-            | INTV_TC001 |       9         |
+            | INTV_TC001 | 9                |
 

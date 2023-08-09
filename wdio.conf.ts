@@ -39,7 +39,7 @@ export const config: Options.Testrunner = {
   // then the current working directory is where your `package.json` resides, so `wdio`
   // will be called from there.
   //
-  specs: ["./test/features/**/*.feature"],
+  specs: [`${process.cwd()}/test/features/**/*.feature`],
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
@@ -258,6 +258,8 @@ export const config: Options.Testrunner = {
   before: function (capabilities, specs) {
     browser.options["environment"] = config.environment;
     browser.options["baseUrl"] = config.baseUrl;
+    browser.options["regresBaseURL"] = config.regresBaseURL;
+    browser.options["nopeCommerceBaseURL"] = config.nopeCommerceBaseURL;
   },
   /**
    * Runs before a WebdriverIO command gets executed.
