@@ -26,6 +26,19 @@ Given(
   }
 );
 
+Given(/^A web page is opened in (.*)$/, async (text) => {
+  await browser.url("https://the-internet.herokuapp.com/");
+  await browser.setTimeout({ implicit: 2000, pageLoad: 2000 });
+  await browser.maximizeWindow();
+
+  let inputTextLink = await $(`//a[contains(text(),"${text}")]`);
+
+  await inputTextLink.scrollIntoView();
+  await browser.pause(1000);
+  await inputTextLink.click();
+  await browser.pause(1000);
+});
+
 Given(/^Get list of (.*) from reqres.in$/, async function (endpointRef) {
   if (!endpointRef)
     throw Error(`Given endpoint ref: ${endpointRef} is not valid`);
