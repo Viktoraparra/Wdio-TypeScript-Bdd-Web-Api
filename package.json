@@ -13,7 +13,8 @@
     "qa:web": "export HEADLESS=Y && npx wdio config/wdio.qa.conf.ts --cucumberOpts.tagExpression='@web'",
     "invt": "export HEADLESS=Y && npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@invt'",
     "qa:invt": "export DEBUG=N && export HEADLESS=N && npx wdio config/wdio.qa.conf.ts --cucumberOpts.tagExpression='@invt'",
-    "regression": "npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@regression'"
+    "regression": "npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@regression'",
+    "qa:smoke": "npx wdio wdio.conf.ts --cucumberOpts.tagExpression='@smoke'"
   },
   "keywords": [
     "webdriverio",
