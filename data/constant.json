@@ -4,7 +4,6 @@
     "QUERY_PARAM": { "pages": 2 }
   },
   "DB_QUERIES": {
-    // parametizacion
     "GET_SALES_QUOTE": "SELECT TOP 1 * FROM [databaseName].[dbo][Table] WHERE [Date] = '{{date}}"
   }
 }
