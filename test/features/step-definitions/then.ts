@@ -4,6 +4,7 @@ import logger from "../../helper/logger.js";
 import reporter from "../../helper/reporter.js";
 import fs from "fs";
 import nopCommerceCustlistPage from "../../page-objects/nopcommerce.custlist.page.js";
+import dbHelper from "../../helper/dbHelper.js";
 import constants from "../../../data/constant.json" assert { type: "json" };
 
 Then(
@@ -98,5 +99,36 @@ Then(/^Verify if all users exist in customers list$/, async function () {
   } catch (err) {
     err.message = `${this.testid}: Failed at checking users in nopcommerce site, ${err.message}`;
     throw err;
+  }
+});
+
+Then(/^Validate DB result$/, async function () {
+  try {
+    /**1. Execute DB query */
+    let testid = this.testid;
+    let res;
+    await browser.call(async function () {
+      // @ts-ignore
+      res = await dbHelper.executeQuery(
+        testid,
+        browser.options.sqlConfig,
+        constants.DB_QUERIES.GET_SALES_QUOTE
+      );
+    });
+    // @ts-ignore
+    reporter.addStep(
+      this.testid,
+      "debug",
+      `DB response received, data: ${JSON.stringify(res)}`
+    );
+
+    /** 3.Store results*/
+    let data = JSON.stringify(res, undefined, 4);
+    let filename = `${process.cwd()}/data/db-res/dbresults.json`;
+    fs.writeFileSync(filename, data);
+    reporter.addStep(this.testid, "info", `DB response stored in json file`);
+  } catch (error) {
+    error.message = `${this.testid}: Failed at getting DB results, ${error.message}`;
+    throw error;
   }
 });

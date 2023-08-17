@@ -5,6 +5,9 @@ export const config = Object.assign(baseConfig, {
   baseUrl: "http://www.saucedemo.com",
   regresBaseURL: "http//regres.in",
   nopeCommerceBaseURL: "https://admin-demo.nopcommerce.com",
+  authUrl: "",
+  baseUrlAPI: "",
+  adminToken: "",
   sqlConfig: {
     user: process.env.DB_STG_USER,
     password: process.env.DB_STG_PASSWORD,

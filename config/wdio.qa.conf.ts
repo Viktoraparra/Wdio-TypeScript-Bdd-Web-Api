@@ -3,8 +3,10 @@ export const config = Object.assign(baseConfig, {
   //All Test env specific key val pairs
   environment: "QA",
   baseUrl: "http://www.saucedemo.com",
+  baseUrlAPI: "https://auth-op.dev.whereitsat.com",
   regresBaseURL: "http//regres.in",
   nopeCommerceBaseURL: "https://admin-demo.nopcommerce.com",
+  adminToken: "",
   sqlConfig: {
     user: process.env.DB_QA_USER,
     password: process.env.DB_QA_PASSWORD,
